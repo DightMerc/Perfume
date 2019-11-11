@@ -1,4 +1,10 @@
 from django.db import models
+import logging
+
+from django.db.models.signals import post_save, m2m_changed
+from django.dispatch import receiver
+
+logger = logging.getLogger(__name__)
 
 # Create your models here.
 class Photo(models.Model):
@@ -24,7 +30,7 @@ class ProductVolume(models.Model):
         verbose_name_plural = "Объёмы продукции"
 
     def __str__(self):
-        return f"{self.id} - {self.title}"
+        return f"{self.title}"
 
 
 class Category(models.Model):
@@ -62,6 +68,17 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.id} - {self.titleRU}"
 
+    # def save(self, *args, **kwargs):
+
+    #     super().save(*args, **kwargs)  # Call the "real" save() method.
+
+    #     product = Product.objects.get(id=self.id)
+    #     logger.error(product)
+    #     logger.error(product.volume)
+
+
+        
+
 
 class PriceForVolume(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Продукт")
@@ -74,4 +91,30 @@ class PriceForVolume(models.Model):
         verbose_name_plural = "Цены"
 
     def __str__(self):
-        return f"{self.id} - {self.product} - {self.volume}"
+        return f"{self.product} - {self.volume}"
+
+
+def save_product(sender, instance, pk_set, **kwargs):
+    logger.error(sender.id)
+    logger.error(sender)
+    logger.error(instance)
+    logger.error(f"pk_set {pk_set}")
+
+    
+
+    for a in pk_set:
+        try:
+            test = PriceForVolume.objects.filter(product=instance).get(volume=ProductVolume.objects.get(id=a))
+        except Exception as e:
+            price = PriceForVolume()
+            price.product = instance
+            price.volume = ProductVolume.objects.get(id=a)
+            price.price = 0
+            price.save()
+
+            logger.error("price saved")
+
+
+
+m2m_changed.connect(save_product, sender=Product.volume.through)
+

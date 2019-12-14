@@ -1,4 +1,5 @@
 {% load static %}
+{% load extraTags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,17 +12,25 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Amado - Furniture Ecommerce Template | Home</title>
-
+    <title>Perfume Ecommerce</title>
+    
     <!-- Favicon  -->
     <link rel="icon" href="{% static 'img/core-img/favicon.ico'%}">
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="{% static 'css/core-style.css'%}">
-    <link rel="stylesheet" href="{% static 'style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </head>
 
 <body>
+        
     <!-- Search Wrapper Area Start -->
     <div class="search-wrapper section-padding-100">
         <div class="search-close">
@@ -49,7 +58,7 @@
         <div class="mobile-nav">
             <!-- Navbar Brand -->
             <div class="amado-navbar-brand">
-                <a href="index.html"><img src="{% static 'img/core-img/logo.png'%}" alt=""></a>
+                <a href="/"><img src="{% static 'img/core-img/logo.png'%}" alt=""></a>
             </div>
             <!-- Navbar Toggler -->
             <div class="amado-navbar-toggler">
@@ -66,76 +75,158 @@
             <!-- Logo -->
             <div class="logo">
                     
-                <a href="index.html"><img src="{% static 'img/core-img/logo.png'%}" alt=""></a>
+                <a href="/"><img src="{% static 'img/core-img/logo.png'%}" alt=""></a>
             </div>
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
-                    <li class="active"><a href="index.html">Home</a></li>
-                    <li><a href="shop.html">Shop</a></li>
-                    <li><a href="product-details.html">Product</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                    <li><a href="checkout.html">Checkout</a></li>
+                    <!-- User: {{ user }} -->
+                    <li><a href="/shop/1">Магазин</a></li>
+                    {% for category in categories %}
+                        <li><a href="/shop/{{ category.id }}">{{ category.title  }}</a></li>
+                    {% endfor %}
+                    <li><a href="/brands/">Бренды</a></li>
+
+
                 </ul>
+
             </nav>
+            
+
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
+                <a href="#" class="btn amado-btn mb-15" style="padding-top: 15px;">Акции</a>
+                <!-- <a href="#" class="btn amado-btn active">New this week</a> -->
             </div>
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-100">
-                <a href="cart.html" class="cart-nav"><img src="img/core-img/cart.png" alt=""> Cart <span>(0)</span></a>
-                <a href="#" class="fav-nav"><img src="img/core-img/favorites.png" alt=""> Favourite</a>
-                <a href="#" class="search-nav"><img src="img/core-img/search.png" alt=""> Search</a>
+                
+                <a href="/cart" class="cart-nav"><img src="{% static 'img/core-img/cart.png'%}" alt=""> Корзина ({{ cart.products.all|length }})</a>
+                <a href="/buy" class="search-nav"><img src="{% static 'img/core-img/favorites.png'%}" alt=""> Заказ</a>
+                <a href="#" class="search-nav"><img src="{% static 'img/core-img/search.png'%}" alt=""> Поиск</a>
             </div>
             <!-- Social Button -->
             <div class="social-info d-flex justify-content-between">
-                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
             </div>
         </header>
         <!-- Header Area End -->
 
+        
+
         <!-- Product Catagories Area Start -->
         <div class="products-catagories-area clearfix">
-            <div class="amado-pro-catagory clearfix">
+                <div class="container" style="padding:0; width: 100%;">
+                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                          <!-- Indicators -->
+                          <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            {% for number in banners|getQuantityRow %}
+                                <li data-target="#myCarousel" data-slide-to="{{number}}"></li>
+                            {% endfor %}
+                          </ol>
+                      
+                          <!-- Wrapper for slides -->
+                          <div class="carousel-inner">
+                      
+                            <div class="item active">
+                              <img  src="{{ banners.0.photo.url }}" alt="Los Angeles" style="width:100%;">
+                            </div>
 
-                <!-- Single Catagory -->
+                            {% for banner in banners|allButFirst %}
+                                <div class="item">
+                                <img  src="{{ banner.photo.url }}" alt="Chicago" style="width:100%;">
+                                
+                                </div>
+                            
+                            {% endfor %}
+                          
+                            
+                        
+                          </div>
+                      
+                          <!-- Left and right controls -->
+                          <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                      </div>
+                    
+                      <h4>Бренды</h4>
+                      <div class="amado-pro-catagory clearfix">
+
+                            <!-- Single Catagory -->
+                            {% for brand in brands %}
+                            <div style="width: 80px; height: 80px; border: 1px solid white;"  class="single-products-catagory clearfix">
+                                
+                                <a href="/brands/{{ brand.id }}">
+                                    <img style="width: 80px; height: 80px;" src="/{{ brand.photo.url }}" alt="">
+                                    <!-- Hover Content -->
+                                </a>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                        <h4>Продукция</h4>
+
+            <div style="display: flex; width: 100%; justify-content: space-between;">
+                {% for product in products %}
+                <a style="text-decoration: none; "href="/products/{{ product.id }}">
+                <div class="productCard">
+                    
+                        <div style="height: 150px; width: 250;">
+                            <img style="width: 100%; height: 100%; object-fit: cover;" src="/{{ product.photo.all.0.photo.url }}" alt="">
+                        </div>
+                        
+                            <p class="priceText">От $180</p>
+                            <h4 class="titleText">{{ product.title }}</h4>
+
+                        
+                </div>
+                </a>
+
+                {% endfor %}
+            </div>
+<!--             <div class="amado-pro-catagory clearfix">
+
                 {% for product in products %}
                 <div class="single-products-catagory clearfix">
-                    <a href="shop.html">
-                        <img src="/{{ product.photo.url }}" alt="">
-                        <!-- Hover Content -->
+                    
+                    <a href="/products/{{ product.id }}">
+                        <img src="/{{ product.photo.all.0.photo.url }}" alt="">
                         <div class="hover-content">
+
                             <div class="line"></div>
-                            <p>From $180</p>
-                            <h4>{{ product.titleRU }}</h4>
+                            <p>От $180</p>
+                            <h4>{{ product.title }}</h4>
+
                         </div>
                     </a>
                 </div>
                 {% endfor %}
                 
-            </div>
+            </div> -->
         </div>
         <!-- Product Catagories Area End -->
     </div>
     <!-- ##### Main Content Wrapper End ##### -->
 
     <!-- ##### Newsletter Area Start ##### -->
-    <section class="newsletter-area section-padding-100-0">
+    <!-- <section class="newsletter-area section-padding-100-0">
         <div class="container">
             <div class="row align-items-center">
-                <!-- Newsletter Text -->
                 <div class="col-12 col-lg-6 col-xl-7">
                     <div class="newsletter-text mb-100">
                         <h2>Subscribe for a <span>25% Discount</span></h2>
                         <p>Nulla ac convallis lorem, eget euismod nisl. Donec in libero sit amet mi vulputate consectetur. Donec auctor interdum purus, ac finibus massa bibendum nec.</p>
                     </div>
                 </div>
-                <!-- Newsletter Form -->
                 <div class="col-12 col-lg-6 col-xl-5">
                     <div class="newsletter-form mb-100">
                         <form action="#" method="post">
@@ -146,7 +237,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- ##### Newsletter Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
@@ -158,12 +249,10 @@
                     <div class="single_widget_area">
                         <!-- Logo -->
                         <div class="footer-logo mr-50">
-                            <a href="index.html"><img src="img/core-img/logo2.png" alt=""></a>
+                            <a href="/"><img src="img/core-img/logo2.png" alt=""></a>
                         </div>
                         <!-- Copywrite Text -->
-                        <p class="copywrite"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                        
                     </div>
                 </div>
                 <!-- Single Widget Area -->
@@ -176,19 +265,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                 <div class="collapse navbar-collapse" id="footerNavContent">
                                     <ul class="navbar-nav ml-auto">
                                         <li class="nav-item active">
-                                            <a class="nav-link" href="index.html">Home</a>
+                                            <a class="nav-link" href="/">Главная</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="shop.html">Shop</a>
+                                            <a class="nav-link" href="/shop/1">Магазин</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="product-details.html">Product</a>
+                                            <a class="nav-link" href="/cart">Корзина ({{ cart.products.all|length }})</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="cart.html">Cart</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">Checkout</a>
+                                            <a class="nav-link" href="/buy">Заказ</a>
                                         </li>
                                     </ul>
                                 </div>

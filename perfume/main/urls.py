@@ -19,11 +19,25 @@ from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
 
-from .views import MainView
+from .views import MainView, SingleProductView, ShopView, AddToCartView, CartView, BuyView, KickProductView, CheckoutView, BrandView, ChoosenBrandView
 
 
 urlpatterns = [
     path('', MainView, name="MainView"),
+    path('products/<int:pk>', SingleProductView, name="SingleProductView"),
+    path('shop/<int:pk>', ShopView, name="ShopView"),
+    path('addToCart/', AddToCartView, name="AddToCartView"),
+    path('cart/', CartView, name="CartView"),
+    path('buy/', BuyView, name="BuyView"),
+    path('kickProduct/', KickProductView, name="KickProductView"),
+    path('checkout/', CheckoutView, name="CheckoutView"),
+    path('brands/', BrandView, name="BrandView"),
+    path('brands/<int:brand>/', ChoosenBrandView, name="ChoosenBrandView"),
+
+
+
+
+
 
 ]
 

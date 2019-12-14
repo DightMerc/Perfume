@@ -1,0 +1,15 @@
+<div class="carousel-inner">
+                                    
+                                    <div class="carousel-item active">
+                                        <a class="gallery_img" href="/{{ mainPhoto }}">
+                                            <img class="d-block w-100" src="/{{ mainPhoto }}" alt="First slide">
+                                        </a>
+                                    </div>
+                                    {% for photo in photoes %}
+                                        <div class="carousel-item">
+                                            <a class="gallery_img" href="/{{ photo.photo.url }}">
+                                                <img class="d-block w-100" src="/{{ photo.photo.url }}" alt="Second slide">
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
